@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+
+<h1 class="text-center">¡Concursa por una prenda de vestir!</h1>
+    <h3 class="text-center mb-5">¡Por compras superiores a $20.000 en productos ya estás participando!</h3>
+    <div id="products-container" class="row">
+      
+    </div>
+
+
+
+{% endblock content %}
+
+{% block script %}
+<link  rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script src="{% static 'core/js/premio.js' %}"></script>
+
+  
+{% endblock script %}

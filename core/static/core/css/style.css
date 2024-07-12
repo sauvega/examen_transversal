@@ -1,0 +1,126 @@
+.nav-item {
+  list-style-type: none;
+}
+.carousel-container {
+  width: 400px; 
+  margin-left:  70px;
+  margin-right: auto;
+  margin-top: 100px;
+}
+.padding-nav { 
+  padding-right: 20px;
+}
+.card-shadow {
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.45);
+}
+.card-image {
+  width: 80%;
+  margin: 10px auto;
+}
+.footer {
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: #212529;
+  color: white;
+  
+}  
+.card-title{
+  font-weight: bold;
+}
+.card-text{
+  color: darkblue;
+  font-weight: bold;
+
+}
+.card-textbod{
+  color:green;
+  font-weight: bold;
+}
+.card-textofer{
+  color: tomato;
+  font-weight: bold;
+}
+.titulo-ficha{
+  margin-right: 30px;
+  color: aqua;
+
+}
+.small-img {
+  width: 100px; 
+  float: right; 
+  margin-left: 30px; 
+  }
+  #boleta_tabla_estados{
+      margin-left: 1000px;
+  }
+  #boleta_tabla_estados td {
+      
+      padding-right: 20px;
+      text-align: center;
+      font-weight: bold;
+  
+  }
+
+.body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+  }
+  .main {
+      flex: 1;
+  }
+  .mt-auto {
+      margin-top: auto;
+  }
+
+  .carousel-inner{
+      width: 95%;
+      left: 40px;
+  }
+  .label.error {
+      color: red;
+      font-weight: bold;
+  }
+      .mt-auto {
+      margin-top: auto;
+      }
+      #contenedor-principal {
+          min-height: 100vh; } 
+
+      .form-label{
+              font-weight: bold;
+          }
+      .mb-3{
+              width: 400px;
+      }
+      .fotoperfil{
+              position: absolute;
+              top: 50px;
+              right: 690px;
+              height: 500px;
+          }
+
+      .btn btn-ptimary{
+              position: absolute;
+              left: 0%;
+      }
+      .btnnn{
+              position: absolute;
+              right: 770px;
+              bottom: 380px;
+      }
+      .error {
+              color: red;
+              font-size: 1em;
+          }
+      .foto {
+              width: 200px;  
+              height: 200px; 
+              object-fit: cover; 
+              border-radius: 50%; 
+          }

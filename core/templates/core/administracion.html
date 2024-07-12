@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+<form method="post" id="formulario-ficha">
+
+    {% csrf_token %}
+
+    <div id="contenedor-principal" class="d-flex flex-column min-vh-100">
+      <div id="menu">
+        <h1 style="position: absolute; top:90px; left: 700px;">Administrar tienda</h1>
+        {% if user.is_authenticated and user.is_staff and user.is_active or user.is_authenticated and user.is_superuser and user.is_active %}
+          <div class="list-group" style="padding-top: 100px; position:absolute; top: 70px; right: 850px;">
+            <a href="/usuarios" class="list-group-item list-group-item-action"style="width: 400px;">Mantenedor de usuarios</a>
+            <a href="/productos" class="list-group-item list-group-item-action"style="width: 400px;">Mantenedor de productos</a>
+            <a href="/ventas" class="list-group-item list-group-item-action"style="width: 400px;">Historial de ventas</a>
+            <a href="/bodega" class="list-group-item list-group-item-action"style="width: 400px;">Mantenedor de bodega</a>
+            {% if user.is_authenticated and user.is_superuser and user.is_active %}
+            <a href="/admin"> Administrador de Django </a></li>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+</form>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'core/js/ficha.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,160 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    <h1>Carrito de Compras</h1>
+    <br><br>
+    <br>
+    <div class="table-responsive">
+        <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">Categoría</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Precio</th>
+            <th scope="col">%Subscriptor</th>
+            <th scope="col">%Oferta</th>
+            <th scope="col">%Desc total</th>
+            <th scope="col">Descuentos</th>
+            <th scope="col">Precio a pagar</th>
+            <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in detalle_carrito %}
+            <tr>
+                <td>{{ item.producto.categoria.nombre }}</td>
+                <td>{{ item.producto.nombre }}</td>
+                <td>{{ item.precio|formatear_dinero }}</td>
+                <td>{{ item.descuento_subscriptor|formatear_porcentaje }}</td>
+                <td>{{ item.descuento_oferta|formatear_porcentaje }}</td>
+                <td>{{ item.descuento_total|formatear_porcentaje }}</td>
+                <td>{{ item.descuentos|formatear_dinero }}</td>
+                <td>{{ item.precio_a_pagar|formatear_dinero }}</td>
+                
+                <td><a href="{% url 'eliminar_producto_en_carrito' item.id %}" class="btn btn-sm btn-danger"> Eliminar </a> </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tbody>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="white-space: pre;">  </td>
+            <td></td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="white-space: pre;">  </td>
+                <td></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td> <b>Precio sin IVA:</b> </td>
+            <td><b>{{ monto_sin_iva|formatear_dinero }}</b>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>IVA (19%): </b></td>
+            <td><b>{{ iva|formatear_dinero }}</b>
+            <td>
+                <form action="/boleta" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary"> pagar</button>
+                </form>
+            </td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>Total a pagar: </b></td>
+            <td><b>{{ total_a_pagar|formatear_dinero }}</b>
+            <td>
+                <form action="/vaciar_carrito" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-secondary">Cancelar compra</button>
+                </form>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    
+{% endblock content %}
+{% block script %}
+    <script>
+        const detalleCarrito = "{{ detalle_carrito_json }}";
+        $(document).ready(function(){
+            $('#pagar').click(function(event) {
+                event.preventDefault();
+                // submit with AJAX
+                $.ajax({
+                url: '/boleta',
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function(response) {
+                    Swal.fire({
+                    title: 'Compra realizada',
+                    text: 'La compra se ha realizado con éxito',
+                    icon: 'success',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                    });
+                },
+                error: function(response) {
+                    Swal.fire({
+                    title: 'Error',
+                    text: 'Ha ocurrido un error al realizar la compra',
+                    icon: 'error',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                    });
+                }
+                });
+            });
+        });
+    </script>
+{% endblock script %}

@@ -1,0 +1,168 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+  <h1>Usuarios</h1>
+  <br>
+  <form id="form" class="row g-3 needs-validation" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            
+            <div class="col-sm-12 col-md-4">
+                <input name="username" class="d-none" type="text" value="{{usuario.username}}">
+                
+                <div class="mb-3">
+                    <label for="rut" class="form-label" style="font-weight: bold;">RUT</label>
+                    <input required
+                        value="{{ usuario.perfil.rut }}"
+                        type="text" class="form-control" 
+                        id="rut" name="rut" aria-describedby="rutHelp">
+                    <div id="rutHelp" class="form-text">
+                        Escribe el RUT sin puntos y con guión.
+                    </div>
+                </div>
+
+            
+                <div class="mb-3">
+                    <label for="nombre" class="form-label" style="font-weight: bold;">Nombre</label>
+                    <input required
+                        value="{{ usuario.first_name }}"
+                        type="text" class="form-control" 
+                        id="nombre" name="nombre" aria-describedby="nombreHelp">
+                    <div id="nombreHelp" class="form-text">
+                        Escribe tu nombre.
+                    </div>
+                </div>
+
+            
+                <div class="mb-3">
+                    <label for="apellido" class="form-label" style="font-weight: bold;">Apellido</label>
+                    <input required
+                        value="{{ usuario.last_name }}"
+                        type="text" class="form-control" 
+                        id="apellido" name="apellido" aria-describedby="apellidoHelp">
+                    <div id="apellidoHelp" class="form-text">
+                        Escribe tu apellido.
+                    </div>
+                </div>
+
+                
+                <div class="mb-3">
+                    <label for="correo" class="form-label" style="font-weight: bold;">Correo</label>
+                    <input required
+                    value="{{ usuario.email }}"
+                        type="email" class="form-control" 
+                        id="correo" name="correo" aria-describedby="correoHelp">
+                    <div id="correoHelp" class="form-text">
+                        Escribe tu correo.
+                    </div>
+                </div>
+
+                
+                <div class="mb-3">
+                    <label for="direccion" class="form-label" style="font-weight: bold;">Dirección</label>
+                    <textarea required
+                        class="form-control" rows="3"
+                        id="direccion" name="direccion" aria-describedby="direccionHelp">{{ usuario.perfil.direccion }}</textarea>
+                </div>
+
+                
+                <div class="mb-3">
+                    
+                    <label for="subscrito" class="form-label" style="font-weight: bold;">Con subscripción</label>
+                    <input {{ usuario.perfil.subscrito|yesno:"checked," }} type="checkbox" id="subscrito" name="subscrito">
+                    <div id="subscritoHelp" class="form-text">
+                        Deseo subscribirme con un aporte de $5.000 mensuales
+                        y obtener un 5% de descuento en mis compras.
+                    </div>
+                </div>
+            </div>
+            
+            <div id="image-container" class="col-sm-12 col-md-4">
+              {% if usuario.perfil.imagen %}
+                <img id="cuadro-imagen" src="/media/{{ usuario.perfil.imagen }}">
+              {% else %}
+                <img id="cuadro-imagen" src="{% static 'core/img/istockphoto-1392910304-612x612.jpg' %}">
+              {% endif %}
+              <div class="mb-3">
+                <div class="btn btn-primary" onclick="document.getElementById('id_imagen').click()">Cargar imagen</div>
+                {{ form.imagen }}
+              </div>
+            </div> 
+        </div>
+        
+        <div class="row">
+            <div class="col text-center">
+                <button id="actualizar_usuario" type="submit" class="btn btn-primary">Guardar</button>
+                {% if usuario.id %}
+                  <a class="d-none btn btn-primary"> Eliminar </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>  
+  </form>
+
+  <!-- AREA DE TABLA DE USUARIOS -->
+
+  {% comment %}
+  
+  {% if usuarios %} 
+  
+  {% endcomment %}
+    <table id="tabla-principal" class="table table-responsive mt-4">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>RUT</th>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Correo</th>
+          <th>Direccion</th>
+          <th>Con suscripcion</th>
+          <th>Imagen</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+          <td>
+            <a href="/usuarios?id={{usuario.id}}">
+              {{usuario.id}}
+            </a>
+          </td>
+          <td>{{usuario.perfil.rut}}</td>
+          <td>{{usuario.first_name}}</td>
+          <td>{{usuario.last_name}}</td>
+          <td>{{usuario.email}}</td>
+          <td>{{usuario.perfil.direccion}}</td>
+          <td>{{ usuario.perfil.subscrito|yesno:"Suscrito,No suscrito" }}</td>
+          <td>
+            <img src="/media/{{ usuario.perfil.imagen }}" class="usuario-sm" alt="">
+          </td>
+          <td>
+            <a href="/eliminar_usuario/{{usuario.id}}" class="btn btn-danger">Eliminar</a>
+            <br>
+            <a href="/usuarios?id={{usuario.id}}" class="btn btn-primary mt-2">
+              Editar
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  
+  {% comment %} 
+  
+  {% endif %} 
+  
+  {% endcomment %}
+    
+{% endblock content %}
+    
+{% block script %}
+  <script src="{% static 'core/js/usuarios.js' %}"></script>
+{% endblock script %}
+    

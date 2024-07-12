@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    
+<div class="container mt-4">
+    <h1>Historial de ventas</h1>
+    <div class="table-responsive">
+      <table id="tabla-principal" class="table">
+        <thead>
+          <tr>
+            <th>No boleta</th>
+            <th>Fecha</th>
+            <th>Nombre cliente</th>
+            <th>Suscrito</th>
+            <th>Monto Total</th>
+            <th>Estado</th>
+            <th>Detalle</th>
+            <th>Cambiar Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for boleta in boletas %}
+            
+          <tr>
+            <td>{{boleta.nro_boleta}}</td>
+            <td>{{boleta.fecha_venta}}</td>
+            <td>{{boleta.cliente.usuario.first_name}} {{boleta.cliente.usuario.last_name}}</td>
+            {% if boleta.cliente.subscrito %}
+                <td>SI</td>
+            {% else %}
+                <td>NO</td>
+            {% endif %}
+            <td>{{boleta.total_a_pagar|formatear_dinero}}</td>
+            <td>{{boleta.estado}}</td>
+            <td><a href="/detalle_boleta/{{boleta.nro_boleta}}" class="btn btn-primary">Ver detalle</a></td>
+            <td>
+              <a href="/cambiar_estado_boleta/{{boleta.nro_boleta}}/Anulado" class="btn btn-primary mb-2">Anulado</a>
+              <a href="/cambiar_estado_boleta/{{boleta.nro_boleta}}/Vendido" class="btn btn-primary mb-2">Vendido</a>
+              <a href="/cambiar_estado_boleta/{{boleta.nro_boleta}}/Despachado" class="btn btn-primary mb-2">Despachado</a>
+              <a href="/cambiar_estado_boleta/{{boleta.nro_boleta}}/Entregado" class="btn btn-primary mb-2">Entregado</a>
+            <!-- la pagina dimensianada mas pequeña se notara estos ajustado uno encima de otros
+            pero con pantalla completa se ve ordenado una al lado del otro -->
+            
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endblock content %}

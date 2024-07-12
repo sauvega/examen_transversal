@@ -1,0 +1,102 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %} 
+    <h1>Mantenedor de Productos</h1>
+    <br>
+    <form id="productos" method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-sm-12 col-md-4">
+                    {{ form.non_field_errors }}
+                    <div class="mb-3">
+                        <label for="id" class="form-label" style="font-weight: bold;">ID</label>
+                        <input disabled value="{{ producto.id }}" required type="number" class="form-control" id="id" name="id" aria-describedby="idHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label" style="font-weight: bold;">Categoría</label>
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option value="">Elige</option> {% for categoria in categorias %} <option value="{{ categoria.id }}" {% if producto.categoria.id == categoria.id %}selected{% endif %}>{{ categoria.nombre }}</option> {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label" style="font-weight: bold;">Nombre</label>
+                        <input value="{{ producto.nombre }}" required type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nombreHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label" style="font-weight: bold;">Descripción</label>
+                        <textarea required placeholder="escribe una descripcion" class="form-control" rows="3" id="descripcion" name="descripcion" aria-describedby="descripcionHelp">{{producto.descripcion}}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio" class="form-label" style="font-weight: bold;">Precio</label>
+                        <input value="{{producto.precio}}" required placeholder="$12.990" type="number" class="form-control" id="precio" name="precio" aria-describedby="precioHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descuento_subscriptor" class="form-label" style="font-weight: bold;">Descuento subscriptor</label>
+                        <input value="{{producto.descuento_subscriptor}}" required placeholder="5%" type="number" class="form-control" id="descuento_subscriptor" name="descuento_subscriptor" aria-describedby="descuentosubscriptorHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descuento_oferta" class="form-label" style="font-weight: bold;">Descuento por %Oferta</label>
+                        <input value="{{producto.descuento_oferta}}" required placeholder="5%" type="number" class="form-control" id="descuento_oferta" name="descuento_oferta" aria-describedby="descuentoOfertaHelp">
+                    </div>
+                    <input class="d-none" type="checkbox" name="editar" id="editar">
+                </div>
+                <div id="image-container" class="col-sm-12 col-md-4">
+                    {% if producto.imagen %}
+                    <img id="cuadro-imagen" src="{{ producto.imagen.url }}" alt="Imagen del producto">
+                    {% else %}
+                    <img id="cuadro-imagen" src="{% static 'core/img/sin-imagen.png' %}" alt="Sin imagen">
+                    {% endif %}
+                    <div class="mb-3">
+                        <div class="btn btn-primary" onclick="document.getElementById('id_imagen').click()">Cargar imagen</div>
+                        {{ form.imagen }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <button id="guardar_producto" type="submit" class="btn btn-primary">Guardar</button>
+                    <button id="nuevo_producto" type="submit" class="btn btn-primary">Nuevo Producto</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <table id="tabla-principal" class="table mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Categoría</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>%Descuento Subscriptor</th>
+                <th>%Descuento por oferta</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody> 
+            {% for item in productos %}
+            <tr>
+                <td>
+                    <a href="/productos?id={{ item.id }}">{{ item.id }}</a>
+                </td>
+                <td>{{ item.categoria.nombre }}</td>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td>{{ item.precio|formatear_dinero }}</td>
+                <td>{{ item.descuento_subscriptor|formatear_porcentaje }}</td>
+                <td>{{ item.descuento_oferta|formatear_porcentaje }}</td>
+                <td>
+                    <a href="/eliminar_producto/{{ item.id }}" class="btn btn-danger">Eliminar</a>
+                    <br>
+                    <a href="/productos?id={{ item.id }}" class="btn btn-primary mt-2">Editar</a>
+                </td>
+            </tr> 
+            {% endfor %} 
+        </tbody>
+    </table>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'core/js/productos.js' %}"></script>
+{% endblock script %}

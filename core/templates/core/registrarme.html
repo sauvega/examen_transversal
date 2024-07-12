@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %} 
+<div class="container mt-4">
+    <h1>Registro de Cliente</h1>
+    <br>
+    <form id="form" class="row g-3 needs-validation" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-sm-12 col-md-4">
+                    <div class="mb-3">
+                        <label for="rut" class="form-label" style="font-weight: bold;">RUT</label>
+                        <input required placeholder="Ej: 11123123-K" type="text" class="form-control" id="rut" name="rut" aria-describedby="rutHelp">
+                        <div id="rutHelp" class="form-text"> Escribe el RUT sin puntos y con guión. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label" style="font-weight: bold;">Nombre</label>
+                        <input required placeholder="Ej: Juan" type="text" class="form-control" id="first_name" name="first_name" aria-describedby="nombreHelp">
+                        <div id="nombreHelp" class="form-text"> Escribe tu nombre. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label" style="font-weight: bold;">Apellido</label>
+                        <input required placeholder="Ej: González" type="text" class="form-control" id="last_name" name="last_name" aria-describedby="apellidoHelp">
+                        <div id="apellidoHelp" class="form-text"> Escribe tu apellido. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label" style="font-weight: bold;">Correo</label>
+                        <input required placeholder="Ej: jgonzalez@gmail.com" type="email" class="form-control" id="correo" name="correo" aria-describedby="correoHelp">
+                        <div id="correoHelp" class="form-text"> Escribe tu correo. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label" style="font-weight: bold;">Dirección</label>
+                        <textarea required placeholder="Ej: Calle San Pedro 425, La Florida" class="form-control" rows="3" id="direccion" name="direccion" aria-describedby="direccionHelp"></textarea>
+                        <div id="direccionHelp" class="form-text"> Escribe tu dirección. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subscrito" class="form-label" style="font-weight: bold;">Con subscripción</label>
+                        <input type="checkbox" id="subscrito" name="subscrito">
+                        <div id="subscrito" class="form-text"> Deseo subscribirme con un aporte de $5.000 mensuales y obtener un 5% de descuento en mis compras. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password1" class="form-label" style="font-weight: bold;">Contraseña</label>
+                        <input type="password" required placeholder="Escribe aquí tu contraseña" class="form-control" id="password1" name="password1" aria-describedby="passwordHelp">
+                        <div id="passwordHelp" class="form-text"> La contraseña debe tener un número, un símbolo, letras mayúsculas y minúsculas, y además debe tener al menos 8 caracteres. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password2" class="form-label" style="font-weight: bold;">Repetir contraseña</label>
+                        <input type="password" required placeholder="Repite aquí tu contraseña" class="form-control" id="password2" name="password2" aria-describedby="password2Help">
+                        <div id="password2Help" class="form-text"> La contraseña debe ser igual a la de arriba. </div>
+                    </div>
+                </div>
+                <div id="image-container" class="col-sm-12 col-md-4">
+                    <img class="registro_foto" id="cuadro-imagen" src="{% static 'core/img/istockphoto-1392910304-612x612.jpg' %}" alt="Sin imagen">
+                    <div class="mb-3">
+                        <div class="btn btn-primary" onclick="document.getElementById('id_imagen').click()">Cargar imagen</div>
+                        {{ perfil_form.imagen }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="submit" id="crear_usuario" class="btn btn-primary">Registrarme</button>
+            <button type="reset" id="limpiar_formulario" class="btn btn-primary">Limpiar</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'core/js/registrarme.js' %}"></script>
+{% endblock script %}

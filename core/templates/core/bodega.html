@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    <h1>Mantenedor de Bodega</h1>
+    <br>
+    <!-- Se añadió id="bodegaForm" para identificar el formulario -->
+    <form id="bodega" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                
+                <div class="col-sm-12 col-md-4">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <select class="form-select" id="nombre" name="nombre">
+                            <option selected>Elige</option>
+                            {% for producto in productos %}
+                                <option value="{{producto.id}}" data-nombre="{{producto.nombre}}" data-imagen="{{producto.imagen}}">{{producto.nombre}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <!-- Se corrigió el name del input de cantidad -->
+                        <input id="cantidad" name="cantidad" placeholder="Ej: 10, agregará 10 productos en la bodega" type="number" class="form-control">
+                        Si ingresa un número negativo se restará de la bodega
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <div class="image-container">
+                        <img id="imagen_producto" src="/static/core/img/sin-imagen.png" class="registro_foto">
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col text-center">
+                    <button id="guardar_bodega" type="submit" class="btn btn-primary">Editar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- AREA DE TABLA DE PRODUCTOS -->
+
+    {% if bodega %}
+    <table id="tabla-principal" class="table mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Categoría</th>
+                <th>Nombre</th>
+                <th>Vendidos</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in bodega %}
+            <tr>
+                <th>{{producto.id}}</th>
+                <th>{{producto.nombre_categoria}}</th>
+                <th>{{producto.nombre_producto}}</th>
+                <th>{{producto.vendidos}}</th>
+                <th>{{producto.stock}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+{% endblock content %}
+
+{% block script %}
+    <input type="hidden" id="url_obtener_productos" value="{% url 'obtener_productos' %}">
+    <script src="{% static 'core/js/bodega.js' %}"></script>
+{% endblock script %}

@@ -1,0 +1,132 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+    {% comment %} 
+    
+    {% if boleta %} 
+    
+    {% endcomment %}
+                    <div id="contenedor-principal" class="d-flex flex-column min-vh-100">
+                        <div class="container mt-4">
+                          <h1>Detalle de boleta {{boleta.nro_boleta}}</h1>
+                          {{ boleta.cliente.usuario.first_name }}
+                          {{boleta.cliente.usuario.last_name }}
+                          <table class="table">
+                          </div>
+
+                          <div class="col">
+                            <table id="boleta_tabla_estados">
+                                <tr>
+                                        <img src="{% static 'core/img/asdfasdfas.webp' %}" alt="" height="110px" style="position: absolute; top: 80px; right: 216px" >
+                                </tr>
+                                <br>
+                                <tr style="top: 110px; z-index: index 11;" >
+                                    <td>
+                                      Vendido <br>
+                                      {% if boleta.fecha_venta %}
+                                      {{boleta.fecha_venta|formatear_fecha}} <br>
+                                      {% else %}
+                                      ---
+                                      {% endif %}
+                                    </td>
+                                    <td>
+                                      Despachado <br>
+                                      {% if boleta.fecha_despacho %}
+                                      {{boleta.fecha_despacho|formatear_fecha}} <br>
+                                      {% else %}
+                                      ---
+                                      {% endif %}
+                                    </td>
+                                    <td>
+                                      Entregado <br>
+                                      {% if boleta.fecha_entrega %}
+                                      {{boleta.fecha_entrega|formatear_fecha}} <br>
+                                      {% else %}
+                                      ---
+                                      {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <table class="table" style="margin: 0px 44px 0px 44px;">
+                            <tr>
+                              <td><b>Categoría</b></td>
+                              <td><b>Producto</b></td>
+                              <td><b>Precio</b></td>
+                              <td><b>%Subscriptor</b></td>
+                              <td><b>%Oferta</b></td>
+                              <td><b>%Desc. Total</b></td>
+                              <td><b>Descuento</b></td>
+                              <td><b>Precio a pagar</b></td>
+                            </tr>
+                            {% for item in detalle_carrito %}
+                            <tr>
+                              <td>{{item.producto.categoria.nombre}}</td>
+                              <td>{{item.producto.nombre}}</td>
+                              <td>{{item.precio|formatear_dinero }}</td>
+                              <td>{{item.descuento_subscriptor|formatear_porcentaje  }}</td>
+                              <td>{{item.descuento_oferta|formatear_porcentaje }}</td>
+                              <td>{{item.descuento_total|formatear_porcentaje }}</td>
+                              <td>{{ item.descuentos|formatear_dinero }}</td>
+                              <td>{{ item.precio_a_pagar|formatear_dinero}}</td>
+                            </tr>
+                            {% endfor %}
+                        
+                            <tfoot style="margin: 0px 123px 0px 2310px" >
+                              <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td style="padding-right: 100px;" >
+                                    <b> Precio sin IVA</b>
+                                  </td>
+                                  <td>
+                                      <b>{{  monto_sin_iva|formatear_dinero}}</b>
+                                  </td>
+                              </tr>
+                              <br>
+                              <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td>
+                                    <br>
+                                    <b>Valor del IVA (19%)</b>
+                                  </td>
+                                  <td>
+                                    <br>
+                                    <b>{{ iva|formatear_dinero}}</b>
+                                      
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td>
+                                    <br>
+                                    <b>Total a pagar</b>
+                                  </td>
+                                  <td>
+                                    <br>
+                                      <b>{{total_a_pagar|formatear_dinero}}</b>
+                                  </td>
+                              </tr>
+                          </tfoot>
+                          </table>
+    
+
+    
+{% endblock content %}

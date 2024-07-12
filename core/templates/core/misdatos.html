@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %} 
+<div class="container mt-4">
+    <h1>Mis datos</h1>
+    <br>
+    <form id="form" class="row g-3 needs-validation" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-sm-12 col-md-4">
+                    <div class="mb-3">
+                        <label for="rut" class="form-label" style="font-weight: bold;">RUT</label>
+                        <input value="{{ user.perfil.rut }}" required placeholder="Ej: 11123123-K" type="text" class="form-control" id="rut" name="rut" aria-describedby="rutHelp">
+                        <div id="rutHelp" class="form-text"> Escribe el RUT sin puntos y con guión. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label" style="font-weight: bold;">Nombre</label>
+                        <input value="{{ user.first_name }}" required placeholder="Ej: Juan" type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nombreHelp">
+                        <div id="nombreHelp" class="form-text"> Escribe tu nombre. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label" style="font-weight: bold;">Apellido</label>
+                        <input value="{{ user.last_name }}" required placeholder="Ej: González" type="text" class="form-control" id="apellido" name="apellido" aria-describedby="apellidoHelp">
+                        <div id="apellidoHelp" class="form-text"> Escribe tu apellido. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label" style="font-weight: bold;">Correo</label>
+                        <input value="{{ user.email }}" required placeholder="Ej: jgonzalez@gmail.com" type="email" class="form-control" id="correo" name="correo" aria-describedby="correoHelp">
+                        <div id="correoHelp" class="form-text"> Escribe tu correo. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label" style="font-weight: bold;">Dirección</label>
+                        <textarea required placeholder="Ej: Calle San Pedro 425, La Florida" class="form-control" rows="3" id="direccion" name="direccion" aria-describedby="direccionHelp">{{ user.perfil.direccion }}</textarea>
+                        <div id="direccionHelp" class="form-text"> Escribe tu dirección. </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subscrito" class="form-label" style="font-weight: bold;">{{ user.perfil.subscrito|yesno:"✅ Con,❌ Sin" }} subscripción</label>
+                    </div>
+                </div>
+                <div id="image-container" class="col-sm-12 col-md-4">
+                    {% if user.perfil.imagen %}
+                        <img class="registro_foto" id="cuadro-imagen" src="/media/{{ user.perfil.imagen }}" alt="Imagen del usuario">
+                    {% else %}
+                        <img class="registro_foto" id="cuadro-imagen" src="{% static 'core/img/istockphoto-1392910304-612x612.jpg' %}" alt="Sin imagen">
+                    {% endif %}
+                    <div class="mb-3">
+                        <div class="btn btn-primary" onclick="document.getElementById('id_imagen').click()">Cargar imagen</div>
+                        {{ form.imagen }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="submit" id="crear_usuario" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+{% block script %}
+<script src="{% static 'core/js/misdatos.js' %}"></script>
+{% endblock script %}

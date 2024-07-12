@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block content %}
+ 
+      <div id="menu" style="right: 101px;"></div>
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="left: 10px;">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active" >
+            <img src="{% static 'core/img/marvels-spider-man-remastered.webp' %}" class="d-block w-100" width="100"  alt="..." >
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'core/img/half-life-alyx.webp' %}" class="d-block w-100" width="100" alt="..."> 
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'core/img/forza-horizon.webp' %}" class="d-block w-100" width="100"  alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+  
+
+      {% if productos %}
+      <div style="margin:120px;">
+        <div class="row">
+          {% for producto in productos %}
+            <div class="col p-2 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+              <div class="card" style="width: 18rem;">
+                <img src="/media/{{ producto.imagen }}" class="card-img-top card-shadow card-image" alt="{{ producto.nombre }}">
+                <div class="card-body">
+                  <h5 class="card-title" >
+                    {{ producto.nombre }}
+                  </h5>
+                  <h5 class="card-text">
+                    {{ producto.precio }}
+                  </h5>
+                  <h5 class="card-textbod">
+                    {{producto.html_estado|safe}}
+                  </h5>
+                  <p>
+                    {{ producto.descripcion }}
+                  </p>
+                  <a href="{% url 'ficha' producto.id %}" class="btn btn-primary">Ficha</a>
+                  <a href="{% url 'agregar_producto_al_carrito' producto.id %}" class="btn btn-primary">Agregar al carrito</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {%else%}
+      <h2>No se han encontrado productos</h2>
+      {% endif %}
+
+{% endblock content %}
+{% block script %}
+  <script>
+    $(document).ready(function(){
+      Swal.fire({
+        title: '¡Concursa por una prenda de vestir!',
+        html: '¡Por compras superiores a $20.000 en productos ya estás participando!',
+        icon: '',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        showConfirmButton: false, // Hide the default confirm button
+        footer: '<a style="outline: none;" href="/premio" class="border-0"><button class="swal2-confirm swal2-styled">Más información</button></a>'
+      });
+    });
+  </script>
+{% endblock script %}
