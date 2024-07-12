@@ -150,10 +150,11 @@ def registrarme(request):
             if perfil_form.is_valid():
                 nuevo_perfil = perfil_form.save(commit=False)
                 nuevo_perfil.save()
+                messages.success('Usuario creado con éxito.')
+                return redirect(inicio)
             else:
                 messages.error(request, perfil_form.errors)
                 show_form_errors(request, [perfil_form])
-            messages.success('Usuario creado con éxito.')
         else:
             messages.error(request, usuario_form.errors)
             show_form_errors(request, [usuario_form])
